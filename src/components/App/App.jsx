@@ -1,4 +1,5 @@
 import { useState } from "react";
+import QuestionList from "../QuestionList/QuestionList";
 
 const images = [
   "https://images.pexels.com/photos/3836292/pexels-photo-3836292.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=200",
@@ -22,6 +23,8 @@ export default function App() {
       {img !== 0 && <button onClick={prev}>Prev</button>}
       <img src={images[img]} />
       {img < 4 && <button onClick={next}>Next</button>}
+
+      <QuestionList />
     </div>
   );
 }
