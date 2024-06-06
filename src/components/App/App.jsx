@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import QuestionList from "../QuestionList/QuestionList";
+import { fetchApiQuto } from "../../apiQuote";
+import QuotesList from "../QuotesList/QuotesList";
 
 const images = [
   "https://images.pexels.com/photos/3836292/pexels-photo-3836292.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=200",
@@ -10,6 +12,17 @@ const images = [
 ];
 
 export default function App() {
+  const [quotes, setQuotes] = useState([]);
+  console.log(quotes);
+
+  useEffect(() => {
+    const fetchDataQute = async () => {
+      const data = await fetchApiQuto();
+      setQuotes(data);
+    };
+    fetchDataQute();
+  }, []);
+
   const [img, setImg] = useState(0);
 
   const next = () => {
@@ -25,6 +38,7 @@ export default function App() {
       {img < 4 && <button onClick={next}>Next</button>}
 
       <QuestionList />
+      {quotes.length > 0 && <QuotesList quotes={quotes} />}
     </div>
   );
 }
