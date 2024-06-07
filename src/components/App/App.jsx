@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import QuestionList from "../QuestionList/QuestionList";
 import { fetchApiQuto } from "../../apiQuote";
 import QuotesList from "../QuotesList/QuotesList";
+import TaskList from "../TaskList/TaskList";
+import TaskBar from "../TaskBar/TaskBar";
 
 const images = [
   "https://images.pexels.com/photos/3836292/pexels-photo-3836292.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=200",
@@ -13,7 +15,8 @@ const images = [
 
 export default function App() {
   const [quotes, setQuotes] = useState([]);
-  console.log(quotes);
+
+  const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
     const fetchDataQute = async () => {
@@ -31,6 +34,19 @@ export default function App() {
   const prev = () => {
     setImg(img - 1);
   };
+
+  const addTask = (newTask) => {
+    setTasks((prevTask) => {
+      return [...prevTask, newTask];
+    });
+  };
+
+  const deleteTask = (taskId) => {
+    setTasks((prevTask) => {
+      return prevTask.filter((task) => task.id !== taskId);
+    });
+  };
+
   return (
     <div>
       {img !== 0 && <button onClick={prev}>Prev</button>}
@@ -39,6 +55,8 @@ export default function App() {
 
       <QuestionList />
       {quotes.length > 0 && <QuotesList quotes={quotes} />}
+      <TaskBar addTask={addTask} />
+      {tasks.length > 0 && <TaskList tasks={tasks} deleteTask={deleteTask} />}
     </div>
   );
 }
