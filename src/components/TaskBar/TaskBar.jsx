@@ -1,4 +1,5 @@
 import { nanoid } from "nanoid";
+import css from "./TaskBar.module.css";
 
 export default function TaskBar({ addTask }) {
   const handleSubmit = (e) => {
@@ -16,7 +17,7 @@ export default function TaskBar({ addTask }) {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form className={css.bar} onSubmit={handleSubmit}>
         <input type="text" name="task" />
         <button>Add task</button>
       </form>

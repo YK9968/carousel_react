@@ -4,6 +4,9 @@ import { fetchApiQuto } from "../../apiQuote";
 import QuotesList from "../QuotesList/QuotesList";
 import TaskList from "../TaskList/TaskList";
 import TaskBar from "../TaskBar/TaskBar";
+import { searchGitHubName } from "../../apiGithubSearch";
+import SearchBar from "../SearchBar/SearchBAr";
+import UsersList from "../UsersList/UsersList";
 
 const images = [
   "https://images.pexels.com/photos/3836292/pexels-photo-3836292.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=200",
@@ -17,6 +20,21 @@ export default function App() {
   const [quotes, setQuotes] = useState([]);
 
   const [tasks, setTasks] = useState([]);
+  const [users, setUsers] = useState([]);
+  console.log(users);
+
+  const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    if (!query) {
+      return;
+    }
+    const fetchApiSearchGitHub = async () => {
+      const data = await searchGitHubName(query);
+      setUsers(data);
+    };
+    fetchApiSearchGitHub();
+  }, [query]);
 
   useEffect(() => {
     const fetchDataQute = async () => {
@@ -47,6 +65,10 @@ export default function App() {
     });
   };
 
+  const searchProfile = (queryProfile) => {
+    setQuery(queryProfile);
+  };
+
   return (
     <div>
       {img !== 0 && <button onClick={prev}>Prev</button>}
@@ -57,6 +79,9 @@ export default function App() {
       {quotes.length > 0 && <QuotesList quotes={quotes} />}
       <TaskBar addTask={addTask} />
       {tasks.length > 0 && <TaskList tasks={tasks} deleteTask={deleteTask} />}
+
+      <SearchBar search={searchProfile} />
+      {users.length > 0 && <UsersList users={users} />}
     </div>
   );
 }
