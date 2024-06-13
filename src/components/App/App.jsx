@@ -7,6 +7,8 @@ import TaskBar from "../TaskBar/TaskBar";
 import { searchGitHubName } from "../../apiGithubSearch";
 import SearchBar from "../SearchBar/SearchBAr";
 import UsersList from "../UsersList/UsersList";
+import { fetchMyServer } from "../../api-my-server";
+import ContactsList from "../ContactsList/ContactsList";
 
 const images = [
   "https://images.pexels.com/photos/3836292/pexels-photo-3836292.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=200",
@@ -21,8 +23,8 @@ export default function App() {
 
   const [tasks, setTasks] = useState([]);
   const [users, setUsers] = useState([]);
-  console.log(users);
-
+  const [contacts, setContacts] = useState([]);
+  console.log(contacts);
   const [query, setQuery] = useState("");
 
   useEffect(() => {
@@ -43,6 +45,18 @@ export default function App() {
     };
     fetchDataQute();
   }, []);
+
+  useEffect(() => {
+    if (!contacts) {
+      return;
+    }
+
+    const fetchContacts = async () => {
+      const data = await fetchMyServer();
+      setContacts(data.data);
+    };
+    fetchContacts();
+  }, [contacts]);
 
   const [img, setImg] = useState(0);
 
@@ -82,6 +96,8 @@ export default function App() {
 
       <SearchBar search={searchProfile} />
       {users.length > 0 && <UsersList users={users} />}
+      {contacts.length <= 0 && <p>Sorry your server is disconect</p>}
+      {contacts.length > 0 && <ContactsList contacts={contacts} />}
     </div>
   );
 }
